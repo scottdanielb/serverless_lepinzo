@@ -1,4 +1,6 @@
-// .netlify/functions/single-product
+// .netlify/functions/single-product?id=rec5l8zItlW3yj8Nz
+
+// .netlify/functions/single-product?id=rec5l8zItlW3yj8Nz
 
 require('dotenv').config();
 
@@ -16,6 +18,7 @@ exports.handler = async (event, context, cb) => {
   if (id) {
     try {
       const product = await airtable.retrieve(id);
+      const singleProduct = { id: product.id, ...product.fields };
 
       if (product.error) {
         return {
@@ -28,7 +31,7 @@ exports.handler = async (event, context, cb) => {
           'Access-Control-Allow-Origin': '*',
         },
         statusCode: 200,
-        body: JSON.stringify(product),
+        body: JSON.stringify(singleProduct),
       };
     } catch (error) {
       return {
@@ -43,25 +46,37 @@ exports.handler = async (event, context, cb) => {
   };
 };
 
-//   const {
-//     featured,
-//     category,
-//     description,
-//     name,
-//     price,
-//     images,
-//     company,
-//     stock,
-//     stars,
-//   } = fields;
-//   return {
-//     featured,
-//     category,
-//     description,
-//     name,
-//     price,
-//     images,
-//     company,
-//     stock,
-//     stars,
-//   };
+// const product = await airtable.retrieve(id);
+//       const { records } = await airtable.list();
+//       const products = records.map((product) => {
+//         const { id } = product;
+//         const {
+//           name,
+//           price,
+//           images,
+//           featured,
+//           description,
+//           company,
+//           category,
+//           shipping,
+//         } = product.fields;
+
+//         return {
+//           id,
+//           name,
+//           images,
+//           price,
+//           featured,
+//           description,
+//           company,
+//           category,
+//           shipping,
+//         };
+//       });
+
+//       if (product.error) {
+//         return {
+//           statusCode: 404,
+//           body: `No product with id: ${id}`,
+//         };
+//       }
